@@ -1,0 +1,200 @@
+/* StudyFlow - sidebar + vistas, según mockups */
+:root {
+  --marino: #15244a;
+  --azul: #8aa8e0;
+  --azul-oscuro: #5f84cf;
+  --azul-claro: #e4ebf8;
+  --fondo: #f0f4f9;
+  --blanco: #fff;
+  --texto: #111827;
+  --gris: #6b7280;
+  --borde: #c9d6ee;
+  --verde: #7bbf8e;
+  --verde-claro: #d3ecda;
+  --alta: #e0524f;
+  --media: #f5a43a;
+  --baja: #3f86e0;
+  --radio: 14px;
+  --sombra: 0 2px 8px rgba(21, 36, 74, .08);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif;
+  color: var(--texto);
+  background: var(--fondo);
+  line-height: 1.4;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: sticky; top: 0;
+  flex: 0 0 250px; width: 250px; height: 100vh;
+  display: flex; flex-direction: column;
+  padding: 28px 16px 20px;
+  background: var(--marino); color: #fff;
+}
+.logo { padding: 0 10px 28px; font-size: 26px; font-weight: 600; }
+.logo span { color: var(--azul); }
+.menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.menu button {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 12px 14px;
+  font: inherit; font-size: 16px; text-align: left;
+  color: #c9d3ea; background: transparent;
+  border: none; border-radius: 10px; cursor: pointer;
+}
+.menu button i { font-style: normal; width: 20px; text-align: center; }
+.menu button:hover { background: rgba(255,255,255,.08); }
+.menu button.activo { color: #fff; background: var(--azul); }
+.perfil {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 10px 0; border-top: 1px solid rgba(255,255,255,.12);
+}
+.avatar {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: 50%; background: var(--azul); font-weight: 600;
+}
+
+/* ---------- Contenido y vistas ---------- */
+.contenido { flex: 1; min-width: 0; padding: 36px 40px 56px; }
+.vista { display: none; max-width: 980px; }
+.vista.activa { display: block; }
+h1 { margin: 0 0 24px; font-size: 32px; font-weight: 600; line-height: 1.2; }
+h3 { margin: 0 0 12px; font-size: 20px; font-weight: 600; }
+h4 { margin: 0; font-size: 15px; font-weight: 500; }
+.subtitulo { margin-top: 28px; }
+.encabezado { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.encabezado h1 { margin-bottom: 24px; }
+
+.tarjeta {
+  margin-bottom: 20px; padding: 22px 24px;
+  background: var(--blanco); border: 1px solid var(--borde);
+  border-radius: var(--radio); box-shadow: var(--sombra);
+}
+
+/* ---------- Botones ---------- */
+button { font: inherit; }
+.btn, .btn-borde, .btn-gris {
+  padding: 10px 20px; font-weight: 500; border-radius: 10px; cursor: pointer;
+  transition: background .15s;
+}
+.btn { color: #fff; background: var(--azul); border: none; }
+.btn:hover { background: var(--azul-oscuro); }
+.btn-borde { color: var(--marino); background: #fff; border: 2px solid var(--azul); }
+.btn-borde:hover { background: var(--azul-claro); }
+.btn-gris { color: var(--texto); background: #e5e9f0; border: none; }
+.btn-gris:hover { background: #d9dfe9; }
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--azul-claro); outline-offset: 1px;
+}
+.acciones { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ---------- Inputs ---------- */
+input, select {
+  font: inherit; padding: 10px 12px; color: var(--texto);
+  background: #f7f9fc; border: 1px solid var(--borde); border-radius: 10px;
+}
+input:focus, select:focus { border-color: var(--azul-oscuro); background: #fff; }
+label { font-weight: 500; }
+
+/* ---------- Dashboard ---------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+.stat { margin: 0; }
+.stat strong { display: block; margin: 8px 0 4px; font-size: 32px; font-weight: 600; }
+.stat small { color: var(--gris); }
+#sinDatos { margin: 0 0 14px; color: var(--gris); }
+#sinDatos:empty { display: none; }
+
+/* ---------- Tareas ---------- */
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+#contador { margin: 0; font-weight: 500; color: var(--gris); }
+ul { list-style: none; margin: 0; padding: 0; }
+#lista li, #plan li {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px; padding: 14px 18px;
+  background: var(--blanco); border: 1px solid var(--borde);
+  border-radius: var(--radio); box-shadow: var(--sombra);
+}
+#lista li > span, #plan li { flex: 1; }
+#lista li > span::before {
+  content: ''; display: inline-block; width: 10px; height: 10px;
+  margin-right: 10px; border-radius: 50%; background: var(--gris);
+}
+.tarea.alta > span::before { background: var(--alta); }
+.tarea.media > span::before { background: var(--media); }
+.tarea.baja > span::before { background: var(--baja); }
+#lista li button {
+  padding: 6px 12px; font-size: 14px; color: var(--texto);
+  background: #fff; border: 1.5px solid var(--texto); border-radius: 8px; cursor: pointer;
+}
+#lista li button:hover { background: #f3f4f6; }
+#lista li button:last-child { color: var(--alta); border-color: var(--alta); }
+.tarea.completada { opacity: .6; }
+.tarea.completada > span { text-decoration: line-through; color: var(--gris); }
+#lista li:not(.tarea) { justify-content: center; color: var(--gris); border-style: dashed; box-shadow: none; }
+
+/* ---------- Plan ---------- */
+.fila { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+#disponible { width: 200px; }
+#resumenPlan { margin: 0 0 14px; font-weight: 500; }
+#resumenPlan:not(:empty) { padding: 10px 14px; background: var(--azul-claro); border-radius: 10px; }
+#plan li { border-left: 4px solid var(--verde); }
+
+/* ---------- Temporizador ---------- */
+.timer { max-width: 620px; }
+#modo { margin: 0; font-size: 20px; font-weight: 500; }
+#modo::before { content: 'Modo: '; }
+.reloj-fila { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+#reloj { font-size: 88px; font-weight: 500; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.anillo {
+  flex: 0 0 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 56%, transparent 57%), var(--azul);
+}
+.config { margin: 4px 0 18px; }
+.timer .btn-gris { margin-top: 14px; }
+#aviso { min-height: 0; margin: 14px 0 0; font-weight: 500; color: #1f6b3a; background: var(--verde-claro); border-radius: 10px; }
+#aviso:not(:empty) { padding: 10px 14px; }
+
+/* ---------- Modal ---------- */
+.modal {
+  position: fixed; inset: 0; z-index: 50; display: none;
+  align-items: center; justify-content: center; padding: 16px;
+  background: rgba(17, 24, 39, .45);
+}
+.modal.abierto { display: flex; }
+.modal-caja {
+  width: 100%; max-width: 440px; max-height: 92vh; overflow-y: auto;
+  padding: 24px; background: #fff; border-radius: 16px;
+}
+.modal-cab { display: flex; justify-content: space-between; align-items: center; }
+.modal-cab h3 { margin: 0; font-size: 22px; }
+.cerrar { font-size: 20px; color: var(--gris); background: none; border: none; cursor: pointer; }
+#form { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
+#form label { margin-top: 8px; }
+#form label b { color: var(--alta); }
+#error { min-height: 18px; margin: 4px 0 0; font-size: 14px; color: var(--alta); }
+.modal-pie { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+/* ---------- Móvil ---------- */
+@media (max-width: 800px) {
+  body { flex-direction: column; }
+  .sidebar {
+    position: static; flex: none; width: 100%; height: auto;
+    flex-direction: row; align-items: center; gap: 12px;
+    padding: 12px 14px; overflow-x: auto;
+  }
+  .logo { padding: 0; font-size: 20px; }
+  .menu { flex-direction: row; flex: none; gap: 4px; }
+  .menu button { width: auto; padding: 8px 12px; font-size: 14px; white-space: nowrap; }
+  .menu button i { display: none; }
+  .perfil { display: none; }
+  .contenido { padding: 22px 16px 40px; }
+  h1 { font-size: 26px; }
+  .stats { grid-template-columns: 1fr; }
+  #reloj { font-size: 64px; }
+  .anillo { flex-basis: 80px; height: 80px; }
+  .barra, .encabezado { flex-wrap: wrap; }
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyFlow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar">
+    <div class="logo">Study<span>Flow</span></div>
+    <nav class="menu">
+      <button type="button" class="activo" data-vista="dashboard"><i>▦</i> Dashboard</button>
+      <button type="button" data-vista="tareas"><i>☑</i> Mis Tareas</button>
+      <button type="button" data-vista="plan"><i>▤</i> Plan de Estudio</button>
+      <button type="button" data-vista="temporizador"><i>◔</i> Temporizador</button>
+    </nav>
+    <div class="perfil"><span class="avatar">E</span> Estudiante</div>
+  </aside>
+
+  <main class="contenido">
+
+    <!-- ========== DASHBOARD ========== -->
+    <section id="vista-dashboard" class="vista activa">
+      <h1>¡Hola!<br>Que tengas un día productivo.</h1>
+
+      <div class="stats">
+        <div class="tarjeta stat">
+          <h4>Tiempo de Estudio Total</h4>
+          <strong id="statHoras">0.0 h</strong>
+          <small><span id="statMinutos">0</span> min de concentración</small>
+        </div>
+        <div class="tarjeta stat">
+          <h4>Tareas Pendientes</h4>
+          <strong id="statPendientes">0</strong>
+          <small>Por hacer</small>
+        </div>
+        <div class="tarjeta stat">
+          <h4>Tareas Completadas</h4>
+          <strong id="statCompletadas">0</strong>
+          <small>Hasta ahora</small>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <p id="sinDatos"></p>
+        <div class="acciones">
+          <button type="button" class="btn" data-vista="temporizador">Comenzar Sesión Pomodoro</button>
+          <button type="button" class="btn-borde" data-vista="plan">Ver Mi Plan de Estudio</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MIS TAREAS ========== -->
+    <section id="vista-tareas" class="vista">
+      <div class="encabezado">
+        <h1>Mis Tareas</h1>
+        <button type="button" class="btn" id="abrirModal">+ Nueva tarea</button>
+      </div>
+
+      <div class="barra">
+        <p id="contador"></p>
+        <button type="button" id="ordenar" class="btn-gris">Ordenar por prioridad</button>
+      </div>
+      <ul id="lista"></ul>
+    </section>
+
+    <!-- ========== PLAN DE ESTUDIO ========== -->
+    <section id="vista-plan" class="vista">
+      <h1>Plan de Estudio Personalizado</h1>
+
+      <div class="tarjeta">
+        <h3>Configurar Plan</h3>
+        <div class="fila">
+          <label for="disponible">Tiempo Disponible (minutos):</label>
+          <input id="disponible" type="number" placeholder="Minutos disponibles" min="1">
+          <button type="button" id="planear" class="btn">Generar Plan de Estudio</button>
+        </div>
+      </div>
+
+      <h3 class="subtitulo">Resultado del Plan</h3>
+      <p id="resumenPlan"></p>
+      <ul id="plan"></ul>
+    </section>
+
+    <!-- ========== TEMPORIZADOR ========== -->
+    <section id="vista-temporizador" class="vista">
+      <h1>Temporizador Pomodoro</h1>
+
+      <div class="tarjeta timer">
+        <h2 id="modo">Concentración</h2>
+        <div class="reloj-fila">
+          <div id="reloj">25:00</div>
+          <div class="anillo" aria-hidden="true"></div>
+        </div>
+        <p class="config">Concentración: 25 min | Descanso: 5 min</p>
+        <div class="acciones">
+          <button type="button" id="pausar" class="btn">Pausar</button>
+          <button type="button" id="iniciar" class="btn">Iniciar</button>
+          <button type="button" id="reiniciar" class="btn">Reiniciar</button>
+        </div>
+        <button type="button" id="cambiar" class="btn-gris">Cambiar modo</button>
+        <p id="aviso"></p>
+      </div>
+
+      <button type="button" class="btn-gris" data-vista="dashboard">Volver al Dashboard →</button>
+    </section>
+
+  </main>
+
+  <!-- ========== MODAL: CREAR NUEVA TAREA ========== -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-caja" role="dialog" aria-labelledby="modalTitulo">
+      <div class="modal-cab">
+        <h3 id="modalTitulo">Crear Nueva Tarea</h3>
+        <button type="button" class="cerrar" id="cerrarModal" aria-label="Cerrar">✕</button>
+      </div>
+      <form id="form">
+        <label for="nombre">Nombre de la tarea <b>*</b></label>
+        <input id="nombre" placeholder="Tarea" required>
+
+        <label for="asignatura">Asignatura</label>
+        <input id="asignatura" placeholder="Asignatura" required>
+
+        <label for="prioridad">Prioridad</label>
+        <select id="prioridad">
+          <option value="alta">Alta</option>
+          <option value="media">Media</option>
+          <option value="baja">Baja</option>
+        </select>
+
+        <label for="duracion">Duración estimada (minutos)</label>
+        <input id="duracion" type="number" placeholder="Minutos" min="1">
+
+        <p id="error"></p>
+        <div class="modal-pie">
+          <button type="button" class="btn-borde" id="cancelarModal">Cancelar</button>
+          <button class="btn">Crear Tarea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+// Navegación entre vistas (solo se ve la sección elegida en el sidebar)
+const VISTAS = ['dashboard', 'tareas', 'plan', 'temporizador'];
+
+function mostrarVista(nombre) {
+  if (!VISTAS.includes(nombre)) nombre = 'dashboard';
+  document.querySelectorAll('.vista').forEach((s) => {
+    s.classList.toggle('activa', s.id === 'vista-' + nombre);
+  });
+  document.querySelectorAll('.menu button').forEach((b) => {
+    b.classList.toggle('activo', b.dataset.vista === nombre);
+  });
+  history.replaceState(null, '', '#' + nombre);
+  window.scrollTo(0, 0);
+}
+
+// Cualquier botón con data-vista cambia de sección (menú y atajos)
+document.querySelectorAll('[data-vista]').forEach((b) => {
+  b.addEventListener('click', () => mostrarVista(b.dataset.vista));
+});
+
+// Modal "Crear Nueva Tarea"
+const modal = document.getElementById('modal');
+
+function abrirModal() {
+  modal.classList.add('abierto');
+  modal.setAttribute('aria-hidden', 'false');
+  document.getElementById('nombre').focus();
+}
+function cerrarModal() {
+  modal.classList.remove('abierto');
+  modal.setAttribute('aria-hidden', 'true');
+  document.getElementById('error').textContent = '';
+}
+
+document.getElementById('abrirModal').addEventListener('click', abrirModal);
+document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
+document.getElementById('cancelarModal').addEventListener('click', cerrarModal);
+modal.addEventListener('click', (e) => { if (e.target === modal) cerrarModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarModal(); });
+
+// script.js se carga antes, así que este listener corre después de validar:
+// si no hubo error, la tarea ya se creó y se cierra el modal
+document.getElementById('form').addEventListener('submit', () => {
+  if (document.getElementById('error').textContent === '') cerrarModal();
+});
+
+// Vista inicial: la del hash (#tareas) o el dashboard
+mostrarVista(location.hash.replace('#', ''));
+</script>
+</body>
+</html>
